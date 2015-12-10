@@ -96,22 +96,28 @@ public class Rational implements Comparable{
 	numerator /= gcd;
 	denominator /= gcd;
     }
-    public int compareTo(Object o){
-	if (o instanceof Rational) {
-	    Rational q = (Rational)o;
-	    if (this.numerator * q.denominator > this.denominator * q.numerator){
-		return 1;
+    
+    public int compareTo(Object other) {
+	if (other instanceof Comparable) {
+	    if (other instanceof Binary) {
+		if (this.floatValue() == ((Binary)other).getDec()) {return 0;}
+		else if (this.floatValue() > ((Binary)other).getDec()) {return 1;}
+	        else {return -1;}
 	    }
-	    else if (this.numerator * q.denominator < this.denominator * q.numerator){
-		return -1;
-	    }
-	    else{
-		return 0;
+	    else if (other instanceof Hexadecimal) {
+		if (this.floatValue() == ((Hexadecimal)other).getDec()) {return 0;}
+		else if (this.floatValue() > ((Hexadecimal)other).getDec()) {return 1;}
+		else {return -1;}
+	    }	    
+	    else {
+		if (other instanceof Rational) {
+		    if ( this.numerator * ((Rational)other).denominator == this.denominator * ((Rational)other).numerator ){return 0;}
+		    else if ( this.numerator * ((Rational)other).denominator > this.denominator * ((Rational)other).numerator ){return 1;}
+		    else {return -1;}
+		}
 	    }
 	}
-	else {
-	    return -2;
-	}
+	throw new ClassCastException("\n your compareTo() input is not comparable\n");
     }
 
     public static void main(String[] args){

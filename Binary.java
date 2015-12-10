@@ -4,7 +4,7 @@
 //2015 - 12 - 08
 //skeleton file for class Binary
 
-public class Binary {
+public class Binary implements Comparable{
 
     private int _decNum;
     private String _binNum;
@@ -42,7 +42,10 @@ public class Binary {
 	_binNum = s;
     }
 
-
+    public int getDec() {
+	return _decNum;
+    }
+	
     /*=====================================
       String toString() -- returns String representation of this Object
       pre:  n/a
@@ -69,7 +72,7 @@ public class Binary {
 	String retBin = "";
 	while (decNum > 1) {
 	    remainder = decNum%2;
-	    retBin =+ remainder;
+	    retBin = remainder+ retBin;
 	    decNum /= 2;
 	}
 	return retBin;
@@ -110,7 +113,7 @@ public class Binary {
 	int retDec = 0;
 	int exp = 0;
 	for (int i = s.length(); i > 0; i--) {
-	    retDec += Math.pow(2,exp)*parseInt(s.substring(i-1, i));
+	    retDec += Math.pow(2,exp)*Integer.parseInt(s.substring(i-1, i));
 	    exp ++;
 	}
 	return retDec;
@@ -132,7 +135,7 @@ public class Binary {
 	int retDec = 0;
 	int exp = 0;
 	if (s.length() == 0) {
-	    retDec += Math.pow(2,exp)*parseInt(s.substring(s.length()-1, s.length()));
+	    retDec += Math.pow(2,exp)*Integer.parseInt(s.substring(s.length()-1, s.length()));
 	    exp ++;
 	    retDec += binToDecR(s.substring(0,s.length()-1));
 	}
@@ -157,17 +160,26 @@ public class Binary {
       negative integer if this<input, positive integer otherwise
       =============================================*/
     public int compareTo( Object other ) {
-    	Binary otherBin = (Binary)(other);
-    	int dif = this._decNum - otherBin._decNum;
-    	if (dif > 0) {
-    		return 1;
-    	}
-    	else if (dif == 0) {
-    		return 0;
-    	}
-    	else {
-    		return -1;
-    	}
+	if (other instanceof Comparable) {
+	    if(other instanceof Binary) {
+		if (this._decNum == ((Binary)other).getDec()) {return 0;}
+		else if (this._decNum > ((Binary)other).getDec()) {return 1;}
+		else {return -1;}
+	    }
+	    else if (other instanceof Hexadecimal) {
+		if (this._decNum == ((Hexadecimal)other).getDec()) {return 0;}
+		else if (this._decNum > ((Hexadecimal)other).getDec()) {return 1;}
+		else {return -1;}
+	    }
+	    else {
+		if (other instanceof Rational) {
+		    if (this._decNum == ((Rational)other).floatValue()) {return 0;}
+		    else if (this._decNum > ((Rational)other).floatValue()) {return 1;}
+		    else {return -1;}
+		}
+	    }
+	}
+	throw new ClassCastException("\n your compareTo() input is not comparable.\n");
     }
 
 

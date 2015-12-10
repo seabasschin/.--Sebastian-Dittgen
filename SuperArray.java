@@ -112,6 +112,27 @@ public class SuperArray implements ListInt{
     public int size() {
         return _size;
     }
+    
+    //linear search function, returns index of first occurence of x, -1 if x is not there
+    public int linSearch(Comparable x) {
+	for (int i = 0; i < _size; i++) {
+	    if (_data[i].compareTo(x)==0) {
+		return i;
+	    }
+	}
+	return -1;
+    }
+
+    //is it sorted?
+    public boolean isSorted() {
+	for (int i = 0; i < _size - 1; i ++) {
+	    if (_data[i].compareTo(_data[i+1])>0) {
+		return false;
+	    }
+	}
+	return true;
+    }
+
     //main method for testing
     public static void main( String[] args ) {
 	//*****INSERT ADEQUATE TEST CALLS HERE*****

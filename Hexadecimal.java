@@ -4,7 +4,7 @@
 //2015 - 12 - 08
 
 //skeleton file for class Hexadecimal
-public class Hexadecimal {
+public class Hexadecimal implements Comparable {
 
     private int _decNum;
     private String _hexNum;
@@ -74,7 +74,7 @@ public class Hexadecimal {
 	    int decNum = n; 
 	    int remainder = 0;
 	    String rethex = "";
-	while (decNum > 15) {
+	while (decNum > 0) {
 	    remainder = decNum%16;
 	    rethex = HEXDIGITS.substring(remainder, remainder + 1) + rethex;
 	    decNum /= 16;
@@ -166,18 +166,28 @@ public class Hexadecimal {
       post: Returns 0 if this Object is equal to the input Object,
       negative integer if this<input, positive integer otherwise
       =============================================*/
-    public int compareTo(Hexadecimal b){//Compares this Hexadecimal object to another Hexadecimal object.
-		if (this.getDec() == b.getDec()) return 0;//Return 0 if this object has a Hexadecimal value equal to the other object's Hexadecimal value.
-		if (this.getDec() < b.getDec()) return -1;//Return -1 if this object has a Hexadecimal value less than the other object's Hexadecimal value.
-		if (this.getDec() > b.getDec()) return 1;//Return 1 if this object has a Hexadecimal value greater than the other object's Hexadecimal value.
-		return -999;//Return -999 in case of failure.
+    public int compareTo( Object other ) {
+	if (other instanceof Comparable) {
+	    if (other instanceof Hexadecimal) {
+		if (this._decNum == ((Hexadecimal)other).getDec()) {return 0;}
+		else if (this._decNum > ((Hexadecimal)other).getDec()) {return 1;}
+	        else {return -1;}
+	    }
+	    else if (other instanceof Binary) {
+		if (this._decNum == ((Binary)other).getDec()) {return 0;}
+		else if (this._decNum > ((Binary)other).getDec()) {return 1;}
+	        else {return -1;}
+	    }
+	    else {
+		if (other instanceof Rational) {
+		    if (this._decNum == ((Rational)other).floatValue()) {return 0;}
+		    else if (this._decNum > ((Rational)other).floatValue()) {return 1;}
+		    else {return -1;}
+		}
+	    }
 	}
-	
-	public int compareTo(Object o){//Compares this Hexadecimal object to another object.
-		if (this == o) return 0;//Check for aliasing.
-		if (o instanceof Hexadecimal) return compareTo((Hexadecimal)o);//Compares if object is Hexadecimal.
-	  else throw new ClassCastException("\nMy first error message! compareTo() input not a hex.");//Return if not the same object type.	
-	}
+	throw new ClassCastException("\n your compareTo() input is not comparable\n");	
+    }
 
     //main method for testing
     public static void main( String[] args ) {
@@ -197,13 +207,13 @@ public class Hexadecimal {
 	System.out.println( b1 == b2 ); //should be false
 	System.out.println( b1 == b3 ); //should be true
 	System.out.println( "\n.equals()..." );
-	System.out.println( b1.equals(b2) ); //should be true
+	System.out.println( b1.equals(b2) ); //should be false
 	System.out.println( b1.equals(b3) ); //should be true
 	System.out.println( b3.equals(b1) ); //should be true
 	System.out.println( b4.equals(b2) ); //should be false
 	System.out.println( b1.equals(b4) ); //should be false
 	System.out.println( "\n.compareTo..." );
-	System.out.println( b1.compareTo(b2) ); //should be 0
+	System.out.println( b1.compareTo(b2) ); //should be neg
 	System.out.println( b1.compareTo(b3) ); //should be 0
 	System.out.println( b1.compareTo(b4) ); //should be neg
 	System.out.println( b4.compareTo(b1) ); //should be pos
